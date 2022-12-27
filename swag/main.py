@@ -10,8 +10,11 @@ import time
 
 
 # Функция ожидания элементов
-def wait_of_element_located(xpath, driver_init):
-    element = WebDriverWait(driver_init, 10).until(EC.presence_of_element_located((By.XPATH, xpath)))
+def wait_of_element_located(xpath, driver_init, is_xpath=True):
+    if is_xpath:
+        element = WebDriverWait(driver_init, 10).until(EC.presence_of_element_located((By.XPATH, xpath)))
+    else:
+        element = WebDriverWait(driver_init, 10).until(EC.presence_of_element_located((By.CLASS_NAME, xpath)))
     return element
 
 
@@ -74,7 +77,7 @@ def test_add_jacket_to_the_shopcart(driver_init):
 
     # Поиск описания товара
     item_description = wait_of_element_located(
-        xpath='//*[@id="cart_contents_container"]/div/div[1]/div[3]/div[2]/div[1]', driver_init=driver_init
+        xpath='inventory_item_desc', driver_init=driver_init, is_xpath=False
     )
 
     # Проверка что товар с таким описанием добавлен в корзину
